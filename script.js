@@ -73,6 +73,78 @@ if (music && musicBtn) {
         musicBtn.innerHTML = getMusicIcon(false);
     }
 
+    // Автоойнату мүмкіндігін тексеру: егер ешқандай таңдау жоқ болса, бірнеше жолмен ойнатуға тырысайық
+    document.addEventListener('DOMContentLoaded', () => {
+        const overlay = document.getElementById('autoplayOverlay');
+        const overlayBtn = document.getElementById('overlayPlayBtn');
+
+        function showAutoplayOverlay() {
+            if (overlay) overlay.setAttribute('aria-hidden', 'false');
+        }
+
+        function hideAutoplayOverlay() {
+            if (overlay) overlay.setAttribute('aria-hidden', 'true');
+        }
+
+        // Егер қолданушы бұрын музыка күйін сақтамаған болса, бірнеше тәсіл арқылы автоматты ойнатуға тырыс
+        function tryPlayOnce() {
+            // ensure looping
+            try { music.loop = true; } catch (e) {}
+
+            const p = music.play();
+            if (p !== undefined) {
+                p.then(() => {
+                    localStorage.setItem('music', 'true');
+                    musicBtn.innerHTML = getMusicIcon(true);
+                    hideAutoplayOverlay();
+                    isPlaying = true;
+                }).catch(() => {
+                    // блокталды — overlay көрсетейік
+                    showAutoplayOverlay();
+                });
+            }
+        }
+
+        if (!localStorage.getItem('music')) tryPlayOnce();
+
+        // Егер блокталған болса, кез келген пайдаланушы әрекетінде ойнатуды қайталап көрейік
+        const resumeHandlers = ['pointerdown', 'touchstart', 'keydown'];
+        resumeHandlers.forEach(ev => {
+            window.addEventListener(ev, function resumePlayHandler() {
+                music.play().then(() => {
+                    localStorage.setItem('music', 'true');
+                    musicBtn.innerHTML = getMusicIcon(true);
+                    hideAutoplayOverlay();
+                    isPlaying = true;
+                }).catch(() => {});
+                // remove after first attempt
+                window.removeEventListener(ev, resumePlayHandler);
+            });
+        });
+
+        // When tab becomes visible again, try to resume
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible') {
+                music.play().catch(() => {});
+            }
+        });
+
+        // Қолданушы ойнату батырмасын басса
+        if (overlayBtn) {
+            overlayBtn.addEventListener('click', () => {
+                music.play().then(() => {
+                    localStorage.setItem('music', 'true');
+                    musicBtn.innerHTML = getMusicIcon(true);
+                    hideAutoplayOverlay();
+                    isPlaying = true;
+                }).catch(() => {
+                    // егер қайтадан сәтсіз болса — шағын хабардау
+                    alert('Браузер музыка ойнауды блоктауы мүмкін. Браузер баптауларын тексеріңіз.');
+                });
+            });
+        }
+    });
+
     
             // ==========================
             // Persistent player popup
