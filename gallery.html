@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="kk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Галерея 📸</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- GLOBAL MUSIC (shared behavior via script.js) -->
+<audio id="bgMusic" loop>
+    <source src="music/music.mp3" type="audio/mp3">
+</audio>
+
+<button id="musicBtn" class="icon-btn" aria-label="Музыка"></button>
+<button id="openPlayerBtn" class="icon-btn" aria-label="Persistent player" title="Ашық плеер">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v16H4z" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+</button>
+
+<nav>
+    <div class="nav-links">
+        <a href="index.html">Басты бет</a>
+        <a href="gallery.html">Галерея</a>
+        <a href="rsvp.html">Қатысу</a>
+    </div>
+
+</nav>
+
+<!-- GALLERY HEADER -->
+<section class="page-hero gallery-hero">
+    <div class="gallery-title">
+        <span class="eyebrow">Галерея</span>
+        <h1>Біздің жарқын сәттеріміз</h1>
+        <p>Сыныптағы, мерекедегі және достармен бірге өткен ең есте қалар сәттер.</p>
+    </div>
+    <div class="filter-row">
+        <button class="filter-btn active" data-filter="all" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h18M6 12h12M10 20h4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
+            Барлығы
+        </button>
+        <button class="filter-btn" data-filter="class" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M5 6h14M5 18h14" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
+            Сынып
+        </button>
+        <button class="filter-btn" data-filter="events" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10l5-5 5 5M7 14l5 5 5-5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
+            Іс-шаралар
+        </button>
+        <button class="filter-btn" data-filter="holidays" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
+            Мерекелер
+        </button>
+    </div>
+<!-- GALLERY -->
+<main id="app">
+<section class="gallery-grid">
+        <article class="gallery-card" data-category="class" data-index="0" onclick="openModal(this.dataset.src)" data-src="./images/images/1.jpg">
+            <img src="./images/images/1.jpg" alt="Class celebration" loading="lazy">
+        <div class="gallery-card__meta">
+            <span>Сынып</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5l7 7-7 7-7-7 7-7z" fill="currentColor"/></svg>
+        </div>
+    </article>
+    <article class="gallery-card" data-category="friends" data-index="1" onclick="openModal(this.dataset.src)" data-src="./images/images/2.jpg">
+        <img src="./images/images/2.jpg" alt="Happy students" loading="lazy">
+        <div class="gallery-card__meta">
+            <span>Достық</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5l7 7-7 7-7-7 7-7z" fill="currentColor"/></svg>
+        </div>
+    </article>
+    <article class="gallery-card" data-category="events" data-index="2" onclick="openModal(this.dataset.src)" data-src="./images/images/3.jpg">
+        <img src="./images/images/3.jpg" alt="School performance" loading="lazy">
+        <div class="gallery-card__meta">
+            <span>Мереке</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5l7 7-7 7-7-7 7-7z" fill="currentColor"/></svg>
+        </div>
+    </article>
+    <article class="gallery-card gallery-card--tall" data-category="class" data-index="3" onclick="openModal(this.dataset.src)" data-src="./images/images/4.jpg">
+        <img src="./images/images/4.jpg" alt="School group photo" loading="lazy">
+        <div class="gallery-card__meta">
+            <span>Құттықтау</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5l7 7-7 7-7-7 7-7z" fill="currentColor"/></svg>
+        </div>
+    </article>
+    <article class="gallery-card" data-category="nature" data-index="4" onclick="openModal(this.dataset.src)" data-src="./images/images/5.jpg">
+        <img src="./images/images/5.jpg" alt="Sunset walk" loading="lazy">
+        <div class="gallery-card__meta">
+            <span>Табиғат</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5l7 7-7 7-7-7 7-7z" fill="currentColor"/></svg>
+        </div>
+    </article>
+    <article class="gallery-card" data-category="events" data-index="5" onclick="openModal(this.dataset.src)" data-src="./images/images/6.jpg">
+        <img src="./images/images/6.jpg" alt="Graduation celebration" loading="lazy">
+        <div class="gallery-card__meta">
+            <span>Сәттер</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5l7 7-7 7-7-7 7-7z" fill="currentColor"/></svg>
+        </div>
+    </article>
+    <article class="gallery-card" data-category="events" data-index="6" onclick="openModal(this.dataset.src)" data-src="./images/images/7.jpg">
+        <img src="./images/images/7.jpg" alt="Class friends" loading="lazy">
+        <div class="gallery-card__meta">
+            <span>Достар</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5l7 7-7 7-7-7 7-7z" fill="currentColor"/></svg>
+        </div>
+    </article>
+    <article class="gallery-card" data-category="class" data-index="7" onclick="openModal(this.dataset.src)" data-src="./images/images/8.jpg">
+        <img src="./images/images/8.jpg" alt="Class performance" loading="lazy">
+        <div class="gallery-card__meta">
+            <span>Сынып</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5l7 7-7 7-7-7 7-7z" fill="currentColor"/></svg>
+        </div>
+    </article>
+    <article class="gallery-card" data-category="friends" data-index="8" onclick="openModal(this.dataset.src)" data-src="./images/images/9.jpg">
+        <img src="./images/images/9.jpg" alt="Happy moments" loading="lazy">
+        <div class="gallery-card__meta">
+            <span>Достық</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5l7 7-7 7-7-7 7-7z" fill="currentColor"/></svg>
+        </div>
+    </article>
+    <article class="gallery-card gallery-card--tall" data-category="nature" data-index="9" onclick="openModal(this.dataset.src)" data-src="./images/images/10.jpg">
+        <img src="./images/images/10.jpg" alt="Outdoor scene" loading="lazy">
+        <div class="gallery-card__meta">
+            <span>Табиғат</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5l7 7-7 7-7-7 7-7z" fill="currentColor"/></svg>
+        </div>
+    </article>
+    <article class="gallery-card" data-category="events" data-index="10" onclick="openModal(this.dataset.src)" data-src="./images/images/11.jpg">
+        <img src="./images/images/11.jpg" alt="Celebration" loading="lazy">
+        <div class="gallery-card__meta">
+            <span>Мереке</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5l7 7-7 7-7-7 7-7z" fill="currentColor"/></svg>
+        </div>
+    </article>
+</section>
+
+<!-- MODAL -->
+<div id="modal" class="modal" onclick="closeModal()">
+    <div class="modal-inner" onclick="event.stopPropagation()">
+        <button class="modal-close" type="button" onclick="closeModal()" aria-label="Жабу">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6l-12 12" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
+        </button>
+        <img id="modalImg" alt="Фото">
+    </div>
+    </div>
+
+</main>
+
+<script src="gallery.js"></script>
+<script src="script.js"></script>
+
+</body>
+</html>

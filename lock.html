@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="UTF-8">
+<title>VIP Access</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="lock-box">
+
+    <h1>🔐 VIP ACCESS</h1>
+
+    <input type="password" id="pass" placeholder="Құпия код">
+
+    <button onclick="checkPass()">Кіру</button>
+
+</div>
+
+<script>
+function checkPass() {
+
+    const pass = document.getElementById("pass").value;
+
+    if(pass === "4B2026") {
+        window.location.href = "index.html";
+    } else {
+        alert("Қате код ❌");
+    }
+}
+</script>
+
+</body>
+</html>

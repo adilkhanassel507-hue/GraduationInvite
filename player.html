@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Player</title>
+<style>
+body{font-family:Poppins, sans-serif;background:#0b1220;color:#fff;display:flex;align-items:center;justify-content:center;height:100vh;margin:0}
+.player{width:380px;padding:14px;border-radius:12px;background:linear-gradient(180deg,#111827,#0b1220);box-shadow:0 12px 40px rgba(0,0,0,0.6);display:flex;gap:12px;align-items:center}
+.btn{width:48px;height:48px;border-radius:50%;border:none;background:#ffd36f;color:#111;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.info{flex:1}
+.title{font-weight:700;margin-bottom:6px}
+</style>
+</head>
+<body>
+<div class="player">
+    <button id="pp" class="btn" aria-label="Play/Pause">▶</button>
+    <div class="info">
+        <div class="title">Graduation music</div>
+        <div id="status">Stopped</div>
+    </div>
+    <audio id="playerAudio" loop>
+        <source src="music/music.mp3" type="audio/mp3">
+    </audio>
+</div>
+<script>
+const audio = document.getElementById('playerAudio');
+const btn = document.getElementById('pp');
+const status = document.getElementById('status');
+
+function updateUI(){
+    if(!audio.paused){
+        btn.textContent='⏸';
+        status.textContent='Playing';
+    } else {
+        btn.textContent='▶';
+        status.textContent='Paused';
+    }
+}
+
+// sync with localStorage
+if(localStorage.getItem('music')==='true'){
+    audio.play().catch(()=>{});
+}
+updateUI();
+
+btn.addEventListener('click', ()=>{
+    if(audio.paused){
+        audio.play();
+        localStorage.setItem('music','true');
+    } else {
+        audio.pause();
+        localStorage.setItem('music','false');
+    }
+    updateUI();
+    // notify other windows
+    try{window.opener && window.opener.postMessage({type:'player-toggle',playing:!audio.paused},'*')}catch(e){}
+});
+
+// listen for messages (from main)
+window.addEventListener('message',(ev)=>{
+    if(!ev.data) return;
+    if(ev.data.type==='sync-play'){
+        if(ev.data.playing){audio.play().catch(()=>{});} else audio.pause();
+        updateUI();
+    }
+});
+
+// observe changes in localStorage by other windows
+window.addEventListener('storage',(e)=>{
+    if(e.key==='music'){
+        if(e.newValue==='true') audio.play().catch(()=>{}); else audio.pause();
+        updateUI();
+    }
+});
+
+// notify opener of current state when opened
+try{window.opener && window.opener.postMessage({type:'player-opened',playing:!audio.paused},'*')}catch(e){}
+</script>
+</body>
+</html>
